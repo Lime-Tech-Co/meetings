@@ -8,7 +8,7 @@ abstract class Action extends BaseAction
 {
     protected $validatorRules = null;
 
-    public function validate(): true|array
+    public function validate(): bool|array
     {
         $this->validatorRules = Validator::make(
             $this->request->all(),
