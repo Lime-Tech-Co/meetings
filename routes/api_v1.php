@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function () {
-    return 'voila, Regardez-moi ';
+Route::group([
+    'prefix'    => 'meetings',
+    'namespace' => 'Meetings\Controllers',
+], function () {
+    Route::get('/available', 'MeetingsController@getAvailabilities')
+         ->name('meetings.get-availabilities');
 });
