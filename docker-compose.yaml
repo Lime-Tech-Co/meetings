@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lime
+      MYSQL_USER: default
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql:/var/lib/mysql
+  sqlite:
+    image: keinos/sqlite3
+    volumes:
+      - sqlite:/db
+  redis:
+    image: redis:5.0
+    volumes:
+      - redis:/data
+volumes:
+  mysql:
+  sqlite:
+  redis:
