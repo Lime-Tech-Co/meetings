@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function () {
-    return 'voila, Regardez-moi ';
+Route::group([
+    'prefix'     => 'files',
+    'namespace'  => 'Uploaders\Controllers',
+], function () {
+    Route::post('/', 'FilesController@uploadNewFile')->name('files.upload_file');
 });
