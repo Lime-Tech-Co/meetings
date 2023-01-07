@@ -20,3 +20,10 @@ Route::group([
     Route::get('/available', 'MeetingsController@getAvailabilities')
          ->name('meetings.get-availabilities');
 });
+
+Route::group([
+    'prefix'     => 'files',
+    'namespace'  => 'Uploaders\Controllers',
+], function () {
+    Route::post('/', 'FilesController@uploadNewFile')->name('files.upload_file');
+});
