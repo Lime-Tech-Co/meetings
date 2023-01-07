@@ -17,6 +17,10 @@ RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install zip \
     && docker-php-ext-install exif
 
+# Increase upload size in PHP.ini file
+RUN sed -i "s/upload_max_filesize = .*/upload_max_filesize = 200M/" /usr/local/etc/php/php.ini-development
+RUN sed -i "s/post_max_size = .*/post_max_size = 200M/" /usr/local/etc/php/php.ini-development
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
