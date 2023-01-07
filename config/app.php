@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        \Modules\V1\Uploaders\Services\Providers\UploadServiceProvider::class,
 
         /*
          * Application Service Providers...
