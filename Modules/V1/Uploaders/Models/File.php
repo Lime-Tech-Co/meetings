@@ -4,6 +4,7 @@ namespace Modules\V1\Uploaders\Models;
 
 use App\Http\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class File extends Model
 {
@@ -16,4 +17,24 @@ class File extends Model
         'path',
         'size',
     ];
+
+    /**
+     * @param $query
+     *
+     * @return Builder
+     */
+    public function scopeActive($query): Builder
+    {
+        return $query->where('should_delete', false);
+    }
+
+    /**
+     * @param $query
+     *
+     * @return Builder
+     */
+    public function scopeReadyToDelete($query): Builder
+    {
+        return $query->where('should_delete', true);
+    }
 }
