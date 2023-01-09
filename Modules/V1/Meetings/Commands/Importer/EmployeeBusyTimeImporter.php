@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\V1\Meetings\Commands;
+namespace Modules\V1\Meetings\Commands\Importer;
 
 use Illuminate\Console\Command;
 use Modules\V1\Uploaders\Models\File;
@@ -61,7 +61,7 @@ class EmployeeBusyTimeImporter extends Command
 
     private function getNewFiles(): Collection
     {
-        return File::where('should_delete', false)->get();
+        return File::active()->get();
     }
 
     private function importNewBusyTimes(File $file): void
@@ -71,7 +71,8 @@ class EmployeeBusyTimeImporter extends Command
             $this->removeFile($file);
             return;
         }
-        dd('importing');
+        // TODO Importer Service will be called
+        dd('importing logic.....');
     }
 
     private function removeFile(File $file): void {
