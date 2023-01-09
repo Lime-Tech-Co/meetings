@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Modules\V1\Meetings\Commands\Cleaner;
 
 use Illuminate\Console\Command;
+use Modules\V1\Uploaders\Models\File;
+use Modules\V1\Meetings\Jobs\DeleteFile;
+use Illuminate\Database\Eloquent\Collection;
 
 class DeleteOldFiles extends Command
 {
@@ -11,22 +14,36 @@ class DeleteOldFiles extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'meetings:delete-old-files';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'This command would delete files which imported or not existed';
 
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-        return Command::SUCCESS;
+        $this->getOldFiles()->map(callback: function ($file) {
+            if (config('app.env') === 'production') {
+                DeleteFile::dispatch($file);
+            }
+
+            DeleteFile::dispatchSync($file);
+        });
+    }
+
+    /**
+     * @return Collection
+     */
+    private function getOldFiles(): Collection
+    {
+        return File::readyToDelete()->get();
     }
 }
