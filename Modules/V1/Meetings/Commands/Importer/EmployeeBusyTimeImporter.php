@@ -8,7 +8,10 @@ use Modules\V1\Uploaders\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Modules\V1\Meetings\Models\Pipelines\Reviser\Reviser;
+use Modules\V1\Meetings\Models\Pipelines\Cleaner\Cleaner;
 use Modules\V1\Meetings\Models\Pipelines\Transformer\Transformer;
+use Modules\V1\Meetings\Models\Pipelines\Accumulator\Accumulator;
 
 class EmployeeBusyTimeImporter extends Command
 {
@@ -28,7 +31,8 @@ class EmployeeBusyTimeImporter extends Command
 
     protected Filesystem $defaultStorage;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->defaultStorage = Storage::disk(config('filesystems.default'));
     }
@@ -41,7 +45,6 @@ class EmployeeBusyTimeImporter extends Command
 
     public function handle(): void
     {
-
         /**
          * Steps:
          * 1- New files should be selected from files table.
@@ -52,39 +55,56 @@ class EmployeeBusyTimeImporter extends Command
 
         if ($getNewFiles === null) {
             $this->info('There is no file...');
+
             return;
         }
 
-        $getNewFiles->map(callback: function ($file) {
-            $this->info("fileId: $file->id is going to be imported hopefully..");
-            $this->importNewBusyTimes($file);
-        });
+        try {
+            $getNewFiles->map(callback: function ($file) {
+                $this->info("fileId: $file->id is going to be imported hopefully..");
+                $this->importNewBusyTimes($file);
+            });
+        } catch (\Exception $ex) {
+            \Log::info('Importing busy times failed' . $ex->getMessage());
+        }
     }
 
+    /**
+     * @return Collection
+     */
     private function getNewFiles(): Collection
     {
         return File::active()->get();
     }
 
+    /**
+     * @param File $file
+     *
+     * @return void
+     */
     private function importNewBusyTimes(File $file): void
     {
         if (!$this->defaultStorage->exists($file->path)) {
             $this->info("fileId: $file->id is not EXISTS and will be removed.");
             $this->removeFile($file);
+
             return;
         }
 
         /**
          * Importing Data will be in a pipeline as below:
-         * 1- First step is transformer
-         * 2- Second step is Accumulator
-         * 3- Third step is duplicationRemover
-         * 4- ....
+         * 1- First step is transformer (convert txt to array)
+         * 2- Second step is Accumulator (merge users data into single array)
+         * 3- Third step is Reviser (BusyTimes will be validated, also new users will be determined)
+         * 4- Final step is Cleaner (empty array items will be removed from the given data)
          */
         $importingPipeline = app(Pipeline::class)
             ->send($this->defaultStorage->get($file->path))
             ->through([
                 Transformer::class,
+                Accumulator::class,
+                Reviser::class,
+                Cleaner::class,
             ])->then(function (array $times) {
                 dd($times);
                 // TODO: Importer Job will be dispatch here and MUST be queued
@@ -95,7 +115,13 @@ class EmployeeBusyTimeImporter extends Command
         $importingPipeline->run();
     }
 
-    private function removeFile(File $file): void {
+    /**
+     * @param File $file
+     *
+     * @return void
+     */
+    private function removeFile(File $file): void
+    {
         $file->should_delete = true;
         $file->save();
     }
