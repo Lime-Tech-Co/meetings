@@ -3,10 +3,12 @@
 namespace Modules\V1\Meetings\Commands\Importer;
 
 use Illuminate\Console\Command;
+use Illuminate\Pipeline\Pipeline;
 use Modules\V1\Uploaders\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Modules\V1\Meetings\Models\Pipelines\Transformer\Transformer;
 
 class EmployeeBusyTimeImporter extends Command
 {
@@ -71,8 +73,26 @@ class EmployeeBusyTimeImporter extends Command
             $this->removeFile($file);
             return;
         }
-        // TODO Importer Service will be called
-        dd('importing logic.....');
+
+        /**
+         * Importing Data will be in a pipeline as below:
+         * 1- First step is transformer
+         * 2- Second step is Accumulator
+         * 3- Third step is duplicationRemover
+         * 4- ....
+         */
+        $importingPipeline = app(Pipeline::class)
+            ->send($this->defaultStorage->get($file->path))
+            ->through([
+                Transformer::class,
+            ])->then(function (array $times) {
+                dd($times);
+                // TODO: Importer Job will be dispatch here and MUST be queued
+                // $this->removeFile($file);
+
+            });
+
+        $importingPipeline->run();
     }
 
     private function removeFile(File $file): void {
