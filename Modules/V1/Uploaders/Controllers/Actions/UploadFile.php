@@ -49,6 +49,7 @@ class UploadFile extends Action
                 'data'    => [
                     'id'       => $file->id,
                     'filename' => $file->filename,
+                    'url'      => $file->url,
                 ],
             ];
         } catch (\Exception $ex) {

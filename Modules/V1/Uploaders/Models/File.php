@@ -37,4 +37,12 @@ class File extends Model
     {
         return $query->where('should_delete', true);
     }
+
+    /*
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        return \Storage::disk(config('filesystems.default'))->url($this->path);
+    }
 }
