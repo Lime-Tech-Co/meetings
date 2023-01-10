@@ -16,4 +16,12 @@ class File extends Model
         'path',
         'size',
     ];
+
+    /**
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        return \Storage::disk(config('filesystems.default'))->url($this->path);
+    }
 }
