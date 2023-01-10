@@ -7,7 +7,18 @@ use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
 
 class Transformer extends BasePipeline
 {
-    public function handle($data, Closure $next)
+    /**
+     * The input is a plain text which is separated by ";" (semicolon)
+     * The text will be transformed into an array.
+     */
+
+    /**
+     * @param         $data
+     * @param Closure $next
+     *
+     * @return mixed
+     */
+    public function handle($data, Closure $next): mixed
     {
         $transformedData = $this->convertToArray($data);
 
