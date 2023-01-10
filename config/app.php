@@ -185,7 +185,6 @@ return [
         /*
          * Package Service Providers...
          */
-        \Modules\V1\Uploaders\Services\Providers\UploadServiceProvider::class,
 
         /*
          * Application Service Providers...
