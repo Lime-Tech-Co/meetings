@@ -31,11 +31,7 @@ class DeleteOldFiles extends Command
     public function handle(): void
     {
         $this->getOldFiles()->map(callback: function ($file) {
-            if (config('app.env') === 'production') {
                 DeleteFile::dispatch($file);
-            }
-
-            DeleteFile::dispatchSync($file);
         });
     }
 
