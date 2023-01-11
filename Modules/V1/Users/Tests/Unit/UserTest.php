@@ -20,8 +20,7 @@ class UserTest extends TestCase
     {
         User::create([
             'external_user_id' => '170378154979885419149243073079764064027',
-            'first_name' => 'Colin',
-            'last_name' => 'Gomez',
+            'full_name' => 'Colin Gomez',
             'status' => UserStatus::ENABLED->value,
         ]);
 
