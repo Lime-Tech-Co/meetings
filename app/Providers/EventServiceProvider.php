@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Modules\V1\Uploaders\Models\File;
 use Illuminate\Auth\Events\Registered;
+use Modules\V1\Uploaders\Observers\FileObserver;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
@@ -27,7 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        File::observe(FileObserver::class);
     }
 
     /**
