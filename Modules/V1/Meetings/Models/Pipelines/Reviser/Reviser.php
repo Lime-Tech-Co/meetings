@@ -2,23 +2,22 @@
 
 namespace Modules\V1\Meetings\Models\Pipelines\Reviser;
 
-use Closure;
 use Carbon\Carbon;
-use Modules\V1\Users\Models\User;
-use Modules\V1\Users\Models\Constants\UserStatus;
 use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
+use Modules\V1\Users\Models\Constants\UserStatus;
+use Modules\V1\Users\Models\User;
 
 class Reviser extends BasePipeline
 {
     protected array $activeUsersId;
 
     /**
-     * @param         $data
-     * @param Closure $next
+     * @param          $data
+     * @param \Closure $next
      *
      * @return mixed
      */
-    public function handle($data, Closure $next): mixed
+    public function handle($data, \Closure $next): mixed
     {
         $this->activeUsersId = $this->getActiveUserIds();
         $validatedEmployeeData = $this->validateEmployeeBusyDates($data);
@@ -34,7 +33,7 @@ class Reviser extends BasePipeline
     private function validateEmployeeBusyDates(array $employeeBusyTimes): array
     {
         foreach ($employeeBusyTimes as $userId => $items) {
-            /**
+            /*
              * Users data must be kept in database (user id in fact)
              */
             $employeeBusyTimes[$userId]['should_user_register'] = $this->shouldUserRegister($userId);
@@ -82,6 +81,7 @@ class Reviser extends BasePipeline
             if (isset($dates[1]) && $dates[1] > now()) {
                 $accumulator[] = $dates[1];
             }
+
             return $accumulator;
         });
     }

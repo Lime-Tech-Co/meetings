@@ -3,15 +3,15 @@
 namespace Modules\V1\Meetings\Commands\Importer;
 
 use Illuminate\Console\Command;
-use Illuminate\Pipeline\Pipeline;
-use Modules\V1\Uploaders\Models\File;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Modules\V1\Meetings\Models\Pipelines\Reviser\Reviser;
-use Modules\V1\Meetings\Models\Pipelines\Cleaner\Cleaner;
-use Modules\V1\Meetings\Models\Pipelines\Transformer\Transformer;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\Storage;
 use Modules\V1\Meetings\Models\Pipelines\Accumulator\Accumulator;
+use Modules\V1\Meetings\Models\Pipelines\Cleaner\Cleaner;
+use Modules\V1\Meetings\Models\Pipelines\Reviser\Reviser;
+use Modules\V1\Meetings\Models\Pipelines\Transformer\Transformer;
+use Modules\V1\Uploaders\Models\File;
 
 class EmployeeBusyTimeImporter extends Command
 {
@@ -42,18 +42,16 @@ class EmployeeBusyTimeImporter extends Command
      *
      * @return void
      */
-
     public function handle(): void
     {
         /**
          * Steps:
          * 1- New files should be selected from files table.
          * 2- Each file should be checked if they are existed.
-         *
          */
         $getNewFiles = $this->getNewFiles();
 
-        if ($getNewFiles === null) {
+        if (null === $getNewFiles) {
             $this->info('There is no file...');
 
             return;
@@ -65,7 +63,7 @@ class EmployeeBusyTimeImporter extends Command
                 $this->importNewBusyTimes($file);
             });
         } catch (\Exception $ex) {
-            \Log::info('Importing busy times failed' . $ex->getMessage());
+            \Log::info('Importing busy times failed'.$ex->getMessage());
         }
     }
 
@@ -96,7 +94,7 @@ class EmployeeBusyTimeImporter extends Command
          * 1- First step is transformer (convert txt to array)
          * 2- Second step is Accumulator (merge users data into single array)
          * 3- Third step is Reviser (BusyTimes will be validated, also new users will be determined)
-         * 4- Final step is Cleaner (empty array items will be removed from the given data)
+         * 4- Final step is Cleaner (empty array items will be removed from the given data).
          */
         $importingPipeline = app(Pipeline::class)
             ->send($this->defaultStorage->get($file->path))
@@ -109,7 +107,6 @@ class EmployeeBusyTimeImporter extends Command
                 dd($times);
                 // TODO: Importer Job will be dispatch here and MUST be queued
                 // $this->removeFile($file);
-
             });
 
         $importingPipeline->run();

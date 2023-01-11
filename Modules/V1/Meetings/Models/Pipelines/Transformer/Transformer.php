@@ -2,7 +2,6 @@
 
 namespace Modules\V1\Meetings\Models\Pipelines\Transformer;
 
-use Closure;
 use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
 
 class Transformer extends BasePipeline
@@ -13,12 +12,12 @@ class Transformer extends BasePipeline
      */
 
     /**
-     * @param         $data
-     * @param Closure $next
+     * @param          $data
+     * @param \Closure $next
      *
      * @return mixed
      */
-    public function handle($data, Closure $next): mixed
+    public function handle($data, \Closure $next): mixed
     {
         $transformedData = $this->convertToArray($data);
 

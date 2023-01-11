@@ -3,19 +3,23 @@
 namespace Modules\V1\Meetings\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Modules\V1\Uploaders\Models\File;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+use Modules\V1\Uploaders\Models\File;
 
 class DeleteFile implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
-    public int $tries= 5;
+    public int $tries = 5;
     public int $retryAfter = 10;
+
     /**
      * Create a new job instance.
      *
@@ -23,7 +27,7 @@ class DeleteFile implements ShouldQueue
      */
     public function __construct(public File $file)
     {
-        /**
+        /*
          * Default Queue name changed.
          */
         $this->queue = 'delete_files';
@@ -37,7 +41,7 @@ class DeleteFile implements ShouldQueue
     public function handle(): void
     {
         try {
-            /**
+            /*
              * steps:
              * 1- File will be checked if it exists, then it will be removed physically.
              * 2- File record in DB will be removed.
@@ -60,7 +64,7 @@ class DeleteFile implements ShouldQueue
      */
     public function failed(\Exception $exception): void
     {
-        \Log::info("cannot delete file:" . $exception->getMessage());
+        \Log::info('cannot delete file:'.$exception->getMessage());
 
         $this->release($this->retryAfter);
     }

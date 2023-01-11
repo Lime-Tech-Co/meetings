@@ -9,9 +9,13 @@ class FilesController extends Controller
 {
     /**
      * @api               {post} api/v1/files Upload A File
+     *
      * @apiVersion        1.0.0
+     *
      * @apiName           UploadFile
+     *
      * @apiGroup          Files
+     *
      * @apiPermission     None
      *
      * @apiDescription    upload new file.
@@ -37,7 +41,6 @@ class FilesController extends Controller
      *       },
      *       "code": 11xxx
      *     }
-     *
      * @apiErrorExample   Error-Response:
      *     HTTP/1.1 400 invalid credentials
      *     {

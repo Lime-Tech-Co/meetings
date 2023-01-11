@@ -3,9 +3,9 @@
 namespace Modules\V1\Meetings\Commands\Cleaner;
 
 use Illuminate\Console\Command;
-use Modules\V1\Uploaders\Models\File;
-use Modules\V1\Meetings\Jobs\DeleteFile;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\V1\Meetings\Jobs\DeleteFile;
+use Modules\V1\Uploaders\Models\File;
 
 class DeleteOldFiles extends Command
 {
@@ -31,7 +31,7 @@ class DeleteOldFiles extends Command
     public function handle(): void
     {
         $this->getOldFiles()->map(callback: function ($file) {
-                DeleteFile::dispatch($file);
+            DeleteFile::dispatch($file);
         });
     }
 

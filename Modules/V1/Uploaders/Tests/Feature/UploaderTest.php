@@ -2,10 +2,10 @@
 
 namespace Modules\V1\Uploaders\Tests\Feature;
 
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class UploaderTest extends TestCase
 {
@@ -16,7 +16,7 @@ class UploaderTest extends TestCase
      *
      * @return void
      */
-    public function test_upload_file(): void
+    public function testUploadFile(): void
     {
         $file = UploadedFile::fake()->create('fake.txt');
 
@@ -24,7 +24,7 @@ class UploaderTest extends TestCase
         $this->assertEquals(200, $response->status());
 
         // Delete File :)
-        $createdFilePath = 'files/' . $response['data']['data']['filename'];
+        $createdFilePath = 'files/'.$response['data']['data']['filename'];
         Storage::delete($createdFilePath);
         $this->assertFalse(Storage::exists($createdFilePath));
     }

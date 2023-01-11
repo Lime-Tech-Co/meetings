@@ -7,10 +7,10 @@ class FileInfoGetter
     public static function extractFileInfos($file): array
     {
         return [
-            'mimeType'  => $file->getMimeType(),
+            'mimeType' => $file->getMimeType(),
             'extension' => $file->getClientOriginalExtension(),
-            'size'      => $file->getSize(),
-            'filename'  => $file->hashName(),
+            'size' => $file->getSize(),
+            'filename' => $file->hashName(),
         ];
     }
 }
