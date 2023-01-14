@@ -2,8 +2,9 @@
 
 namespace Modules\V1\Uploaders\Listeners;
 
-use Modules\V1\Uploaders\Events\FileUploaded;
 use Modules\V1\Meetings\Models\Pipelines\PipelineManager;
+use Modules\V1\Uploaders\Events\FileUploaded;
+
 class ImportNewEmployeeBusyTimes
 {
     /**
@@ -18,7 +19,7 @@ class ImportNewEmployeeBusyTimes
         try {
             PipelineManager::runPipeline($event->file);
         } catch (\Exception $e) {
-            \Log::info('cannot send file to importer pipeline: Id: ' . $event->file->id);
+            \Log::info('cannot send file to importer pipeline: Id: '.$event->file->id);
         }
     }
 }

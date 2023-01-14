@@ -2,8 +2,8 @@
 
 namespace Modules\V1\Uploaders\Observers;
 
-use Modules\V1\Uploaders\Models\File;
 use Modules\V1\Uploaders\Events\FileUploaded;
+use Modules\V1\Uploaders\Models\File;
 
 class FileObserver
 {
