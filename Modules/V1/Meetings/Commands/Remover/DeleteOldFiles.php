@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\V1\Meetings\Commands\Cleaner;
+namespace Modules\V1\Meetings\Commands\Remover;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
