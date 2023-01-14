@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\V1\Meetings\Jobs;
+namespace Modules\V1\Uploaders\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

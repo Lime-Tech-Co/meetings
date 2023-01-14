@@ -4,7 +4,7 @@ namespace Modules\V1\Meetings\Commands\Remover;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\V1\Meetings\Jobs\DeleteFile;
+use Modules\V1\Uploaders\Jobs\DeleteFile;
 use Modules\V1\Uploaders\Models\File;
 
 class DeleteOldFiles extends Command
