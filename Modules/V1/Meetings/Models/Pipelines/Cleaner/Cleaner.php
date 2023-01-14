@@ -7,6 +7,13 @@ use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
 class Cleaner extends BasePipeline
 {
     /**
+     * At this stage, give array will be cleaned
+     * allowed items will be:
+     * 1- the one which has "should_user_register"
+     * 2- the one which has at least one item in "busy_times".
+     */
+
+    /**
      * @param          $data
      * @param \Closure $next
      *
