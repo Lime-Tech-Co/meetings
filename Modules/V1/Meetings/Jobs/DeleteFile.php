@@ -30,7 +30,7 @@ class DeleteFile implements ShouldQueue
         /*
          * Default Queue name changed.
          */
-        $this->queue = 'delete_files';
+        $this->queue = 'delete_files_queue';
     }
 
     /**
