@@ -10,6 +10,12 @@ use Modules\V1\Users\Models\User;
 
 class Reviser extends BasePipeline
 {
+    /**
+     * At this stage, the given array will be validated
+     * 1- New users will be detected.
+     * 2- Given dates MUST not be lower than now. Hence, those will be rejected.
+     * 3- Duplicated data MUST be excluded. Because the uploaded data could be duplicated.
+     */
     protected array $activeUsersId;
     protected array $oldExternalUniqueIds;
 
@@ -104,20 +110,23 @@ class Reviser extends BasePipeline
      */
     private function dateParser(array $dates): array
     {
+        /**
+         * As the date formats are not accurate, They myst be parsed and reformatted by Carbon.
+         */
         $result = [];
         foreach ($dates as $date) {
-            $result[] = Carbon::parse($date)->toDateTimeString();
+            $result[] = Carbon::parse($date)->format('Y-m-d H:i:s');
         }
 
         return $result;
     }
 
-    private function removeDuplicateEntries(mixed $busyTimes) {
+    private function removeDuplicateEntries(mixed $busyTimes)
+    {
         if (in_array($busyTimes['external_unique_id'], $this->oldExternalUniqueIds, true)) {
             $busyTimes['busy_times'] = [];
         }
 
         return $busyTimes;
     }
-
 }
