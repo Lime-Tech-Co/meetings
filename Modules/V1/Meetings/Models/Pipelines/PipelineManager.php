@@ -38,9 +38,12 @@ class PipelineManager implements ManagerInterface
                 Reviser::class,
                 Cleaner::class,
             ])->then(function (array $usersBusyTimes) {
-                array_map(static function ($times) {
-                    BusyTimeImporter::dispatch($times);
-                }, $usersBusyTimes);
+                if (count($usersBusyTimes) > 0) {
+                    array_map(static function ($times) {
+                        BusyTimeImporter::dispatch($times);
+                    }, $usersBusyTimes);
+                }
+
             });
 
         $file->delete();
