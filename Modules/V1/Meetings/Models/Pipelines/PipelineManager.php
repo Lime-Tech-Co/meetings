@@ -43,7 +43,6 @@ class PipelineManager implements ManagerInterface
                         BusyTimeImporter::dispatch($times);
                     }, $usersBusyTimes);
                 }
-
             });
 
         $file->shouldDelete();

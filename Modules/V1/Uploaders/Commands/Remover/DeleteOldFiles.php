@@ -3,9 +3,9 @@
 namespace Modules\V1\Uploaders\Commands\Remover;
 
 use Illuminate\Console\Command;
-use Modules\V1\Uploaders\Models\File;
-use Modules\V1\Uploaders\Jobs\DeleteFile;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\V1\Uploaders\Jobs\DeleteFile;
+use Modules\V1\Uploaders\Models\File;
 
 class DeleteOldFiles extends Command
 {
