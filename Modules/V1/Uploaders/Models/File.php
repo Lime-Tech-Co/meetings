@@ -39,7 +39,7 @@ class File extends Model
     /**
      * @return void
      */
-    public function delete(): void
+    public function shouldDelete(): void
     {
         $this->should_delete = true;
         $this->save();
