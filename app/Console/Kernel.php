@@ -3,7 +3,7 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Modules\V1\Meetings\Commands\Remover\DeleteOldFiles;
+use Modules\V1\Uploaders\Commands\Remover\DeleteOldFiles;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
         /**
          * Old Files will be removed every three hours
          */
-         $schedule->command('meetings:delete-old-files')->everyThreeHours();
+         $schedule->command('files:delete-old-files')->everyThreeHours();
     }
 
     /**

@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\V1\Meetings\Commands\Remover;
+namespace Modules\V1\Uploaders\Commands\Remover;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Collection;
-use Modules\V1\Uploaders\Jobs\DeleteFile;
 use Modules\V1\Uploaders\Models\File;
+use Modules\V1\Uploaders\Jobs\DeleteFile;
+use Illuminate\Database\Eloquent\Collection;
 
 class DeleteOldFiles extends Command
 {
@@ -14,7 +14,7 @@ class DeleteOldFiles extends Command
      *
      * @var string
      */
-    protected $signature = 'meetings:delete-old-files';
+    protected $signature = 'files:delete-old-files';
 
     /**
      * The console command description.
