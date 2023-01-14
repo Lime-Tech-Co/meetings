@@ -42,6 +42,6 @@ class File extends Model
     public function delete(): void
     {
         $this->should_delete = true;
-        $this->save;
+        $this->save();
     }
 }
