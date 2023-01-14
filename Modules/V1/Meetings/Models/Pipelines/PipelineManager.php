@@ -18,7 +18,7 @@ class PipelineManager implements ManagerInterface
     {
         $defaultStorage = Storage::disk(config('filesystems.default'));
         if (!$defaultStorage->exists($file->path)) {
-            $file->delete();
+            $file->shouldDelete();
 
             return;
         }
@@ -46,6 +46,6 @@ class PipelineManager implements ManagerInterface
 
             });
 
-        $file->delete();
+        $file->shouldDelete();
     }
 }
