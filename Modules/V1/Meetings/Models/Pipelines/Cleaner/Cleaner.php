@@ -6,8 +6,6 @@ use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
 
 class Cleaner extends BasePipeline
 {
-    protected array $activeUsersId;
-
     /**
      * @param          $data
      * @param \Closure $next
