@@ -23,16 +23,6 @@ class File extends Model
      *
      * @return Builder
      */
-    public function scopeActive($query): Builder
-    {
-        return $query->where('should_delete', false);
-    }
-
-    /**
-     * @param $query
-     *
-     * @return Builder
-     */
     public function scopeReadyToDelete($query): Builder
     {
         return $query->where('should_delete', true);
@@ -44,5 +34,14 @@ class File extends Model
     public function getUrlAttribute(): string
     {
         return \Storage::disk(config('filesystems.default'))->url($this->path);
+    }
+
+    /**
+     * @return void
+     */
+    public function delete(): void
+    {
+        $this->should_delete = true;
+        $this->save;
     }
 }
