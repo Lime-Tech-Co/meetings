@@ -10,11 +10,10 @@ class Accumulator extends BasePipeline
      * Step responsibility is to reduce the size of given array and merge users data into one array item
      * Note:
      * There are two formats for each item:
-     * 1- user_id and full_name WITHOUT any specific time
-     * 2- user_id and 2 dates and a unique ID
-     * 3- unique ID can be ignored in this step.
+     * 1- external_user_id and full_name WITHOUT any specific time
+     * 2- external_user_id and 2 dates and a unique ID.
      *
-     * No Specific extra validation will be applied for give data. Only Unique data will be rejected
+     * No Specific extra validation will be applied for give data.
      */
 
     /**
@@ -47,16 +46,17 @@ class Accumulator extends BasePipeline
                  * First pattern only has user id and user full_name
                  */
                 case 2:
-                $accumulator[$index]['full_name'] = $item[1] ?? null;
-                break;
-                /*
-                 * second pattern does not have full_name
-                 * busy times and a unique id which can be ignored.
-                 */
+                    $accumulator[$index]['full_name'] = $item[1] ?? null;
+                    break;
+                    /*
+                     * second pattern does not have full_name
+                     */
                 case 4:
-                $accumulator[$index]['full_name'] = null;
-                $accumulator[$index]['busy_times'][] = isset($item[1], $item[2]) ? [$item[1], $item[2]] : null;
-                break;
+                    $accumulator[$index]['external_user_id'] = $item[0];
+                    $accumulator[$index]['full_name'] = null;
+                    $accumulator[$index]['busy_times'][] = isset($item[1], $item[2]) ? [$item[1], $item[2]] : null;
+                    $accumulator[$index]['external_unique_id'] = $item[3] ?? null;
+                    break;
             }
 
             return $accumulator;
