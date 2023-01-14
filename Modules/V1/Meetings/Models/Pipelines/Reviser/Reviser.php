@@ -3,6 +3,7 @@
 namespace Modules\V1\Meetings\Models\Pipelines\Reviser;
 
 use Carbon\Carbon;
+use Modules\V1\Meetings\Models\EmployeeBusyTime;
 use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
 use Modules\V1\Users\Models\Constants\UserStatus;
 use Modules\V1\Users\Models\User;
@@ -10,6 +11,7 @@ use Modules\V1\Users\Models\User;
 class Reviser extends BasePipeline
 {
     protected array $activeUsersId;
+    protected array $oldExternalUniqueIds;
 
     /**
      * @param          $data
@@ -20,6 +22,8 @@ class Reviser extends BasePipeline
     public function handle($data, \Closure $next): mixed
     {
         $this->activeUsersId = $this->getActiveUserIds();
+        $this->oldExternalUniqueIds = $this->getOldImportedExternalUniqueIds();
+
         $validatedEmployeeData = $this->validateEmployeeBusyDates($data);
 
         return $next($validatedEmployeeData);
@@ -38,6 +42,7 @@ class Reviser extends BasePipeline
              */
             $employeeBusyTimes[$userId]['should_user_register'] = $this->shouldUserRegister($userId);
             $employeeBusyTimes[$userId]['busy_times'] = $this->validateDates($items['busy_times']);
+            $employeeBusyTimes[$userId] = $this->removeDuplicateEntries($employeeBusyTimes[$userId]);
         }
 
         return $employeeBusyTimes;
@@ -48,10 +53,17 @@ class Reviser extends BasePipeline
      */
     private function getActiveUserIds(): array
     {
-        return User::select('external_user_id')
-                   ->where('status', UserStatus::ENABLED->value)
+        return User::where('status', UserStatus::ENABLED->value)
                    ->get()
+                    ->pluck('external_user_id')
                    ->toArray();
+    }
+
+    public function getOldImportedExternalUniqueIds(): array
+    {
+        return EmployeeBusyTime::get()
+            ->pluck('external_unique_id')
+            ->toArray();
     }
 
     /**
@@ -61,7 +73,7 @@ class Reviser extends BasePipeline
      */
     private function shouldUserRegister(int|string $userId): bool
     {
-        return in_array($userId, $this->activeUsersId, true);
+        return !in_array($userId, $this->activeUsersId, true);
     }
 
     /**
@@ -73,7 +85,6 @@ class Reviser extends BasePipeline
     {
         return array_reduce($busyTimes, function ($accumulator, $items) {
             $dates = $this->dateParser($items);
-
             if (isset($dates[0]) && $dates[0] > now()) {
                 $accumulator[] = $dates[0];
             }
@@ -100,4 +111,13 @@ class Reviser extends BasePipeline
 
         return $result;
     }
+
+    private function removeDuplicateEntries(mixed $busyTimes) {
+        if (in_array($busyTimes['external_unique_id'], $this->oldExternalUniqueIds, true)) {
+            $busyTimes['busy_times'] = [];
+        }
+
+        return $busyTimes;
+    }
+
 }
