@@ -3,14 +3,12 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Modules\V1\Meetings\Commands\Cleaner\DeleteOldFiles;
+use Modules\V1\Meetings\Commands\Remover\DeleteOldFiles;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Modules\V1\Meetings\Commands\Importer\EmployeeBusyTimeImporter;
 
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        EmployeeBusyTimeImporter::class,
         DeleteOldFiles::class,
     ];
 
