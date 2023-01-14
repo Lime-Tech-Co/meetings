@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\V1\Meetings\Jobs;
+namespace Modules\V1\Users\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -46,6 +46,7 @@ class NewUserRegistrar implements ShouldQueue
 
             $user->save();
         } catch (\Exception $ex) {
+            \Log::info($ex->getMessage());
             $this->failed($ex);
         }
     }
