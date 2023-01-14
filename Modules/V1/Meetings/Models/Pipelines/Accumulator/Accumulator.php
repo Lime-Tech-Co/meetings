@@ -2,6 +2,7 @@
 
 namespace Modules\V1\Meetings\Models\Pipelines\Accumulator;
 
+use Carbon\Carbon;
 use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
 
 class Accumulator extends BasePipeline
@@ -48,18 +49,24 @@ class Accumulator extends BasePipeline
                 case 2:
                     $accumulator[$index]['full_name'] = $item[1] ?? null;
                     break;
-                    /*
-                     * second pattern does not have full_name
-                     */
+                /*
+                 * second pattern does not have full_name
+                 */
                 case 4:
                     $accumulator[$index]['external_user_id'] = $item[0];
                     $accumulator[$index]['full_name'] = null;
-                    $accumulator[$index]['busy_times'][] = isset($item[1], $item[2]) ? [$item[1], $item[2]] : null;
+                    $accumulator[$index]['busy_times'][] =
+                        isset($item[1], $item[2]) ? [$this->reformatDatetime($item[1]), $this->reformatDatetime($item[2])] :
+                            null;
                     $accumulator[$index]['external_unique_id'] = $item[3] ?? null;
                     break;
             }
 
             return $accumulator;
         }, []);
+    }
+
+    private function reformatDatetime(string $date): string {
+        return Carbon::parse($date)->format('Y-m-d H:i:s');
     }
 }
