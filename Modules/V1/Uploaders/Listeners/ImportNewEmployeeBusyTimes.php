@@ -18,8 +18,10 @@ class ImportNewEmployeeBusyTimes
     {
         try {
             PipelineManager::runPipeline($event->file);
-        } catch (\Exception $e) {
-            \Log::info('cannot send file to importer pipeline: Id: '.$event->file->id);
+        } catch (\Exception $ex) {
+            \Log::info(
+                'cannot send file to importer pipeline: Id: ' . $event->file->id . 'because: ' . $ex->getMessage()
+            );
         }
     }
 }
