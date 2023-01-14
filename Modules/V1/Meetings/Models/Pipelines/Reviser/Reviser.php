@@ -48,7 +48,7 @@ class Reviser extends BasePipeline
      */
     private function getActiveUserIds(): array
     {
-        return User::select('id')
+        return User::select('external_user_id')
                    ->where('status', UserStatus::ENABLED->value)
                    ->get()
                    ->toArray();
@@ -61,7 +61,7 @@ class Reviser extends BasePipeline
      */
     private function shouldUserRegister(int|string $userId): bool
     {
-        return !in_array($userId, $this->activeUsersId, true);
+        return in_array($userId, $this->activeUsersId, true);
     }
 
     /**
