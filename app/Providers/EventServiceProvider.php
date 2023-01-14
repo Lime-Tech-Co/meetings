@@ -3,11 +3,10 @@
 namespace App\Providers;
 
 use Modules\V1\Uploaders\Models\File;
-use Illuminate\Auth\Events\Registered;
+use Modules\V1\Uploaders\Events\FileUploaded;
 use Modules\V1\Uploaders\Observers\FileObserver;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Modules\V1\Uploaders\Listeners\ImportNewEmployeeBusyTimes;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,8 +16,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        FileUploaded::class => [
+            ImportNewEmployeeBusyTimes::class,
         ],
     ];
 
