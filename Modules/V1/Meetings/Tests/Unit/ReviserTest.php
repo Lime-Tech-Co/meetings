@@ -3,6 +3,7 @@
 namespace Modules\V1\Meetings\Tests\Unit;
 
 use Carbon\Carbon;
+use Modules\V1\Meetings\Models\Constants\StandardTimeFormat;
 use PHPUnit\Framework\TestCase;
 
 class ReviserTest extends TestCase
@@ -137,7 +138,7 @@ class ReviserTest extends TestCase
     {
         $result = [];
         foreach ($dates as $date) {
-            $result[] = Carbon::parse($date)->format('Y-m-d H:i:s');
+            $result[] = Carbon::parse($date)->format(StandardTimeFormat::DEFAULT->value);
         }
 
         return $result;

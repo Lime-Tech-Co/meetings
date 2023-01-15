@@ -3,6 +3,7 @@
 namespace Modules\V1\Meetings\Models\Pipelines\Reviser;
 
 use Carbon\Carbon;
+use Modules\V1\Meetings\Models\Constants\StandardTimeFormat;
 use Modules\V1\Meetings\Models\EmployeeBusyTime;
 use Modules\V1\Meetings\Models\Pipelines\Contracts\BasePipeline;
 use Modules\V1\Users\Models\Constants\UserStatus;
@@ -115,7 +116,7 @@ class Reviser extends BasePipeline
          */
         $result = [];
         foreach ($dates as $date) {
-            $result[] = Carbon::parse($date)->format('Y-m-d H:i:s');
+            $result[] = Carbon::parse($date)->format(StandardTimeFormat::DEFAULT->value);
         }
 
         return $result;
