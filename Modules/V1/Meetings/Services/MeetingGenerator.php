@@ -48,7 +48,7 @@ final class MeetingGenerator
      */
     private function getMeetingLength(): int
     {
-        return $this->meetingLength;
+        return $this->meetingLength * CalendarInterval::DEFAULT_INTERVAL->value;
     }
 
     /**
@@ -117,8 +117,8 @@ final class MeetingGenerator
 
         $result[] = $meetingParticipants->map(function ($employee) {
             return [
-                'employee' => [
-                    'id' => $employee->external_user_id,
+                'employee'       => [
+                    'id'        => $employee->external_user_id,
                     'full_name' => $employee->fullname ?? null,
                 ],
                 'availabilities' => $this->getUserAvailabilities($employee),
@@ -141,7 +141,10 @@ final class MeetingGenerator
         $employeeBusyTimes = $employee->busyTimes->pluck('busy_at')->toArray();
 
         return array_reduce($meetingCalendarTimes, function ($result, $meetingDate) use ($employeeBusyTimes) {
-            if (!in_array($meetingDate, $employeeBusyTimes, true)) {
+            if (
+                !in_array($meetingDate['start_at'], $employeeBusyTimes, true)
+                && !in_array($meetingDate['finished_at'], $employeeBusyTimes, true)
+            ) {
                 $result[] = $meetingDate;
             }
 
@@ -162,19 +165,28 @@ final class MeetingGenerator
             MeetingCacheKeys::GENERATED_CALENDAR_TIME,
             function () use ($startsAt, $finishedAt) {
                 $result = [];
-                for ($i = $startsAt; $i <= $finishedAt; $i += CalendarInterval::DEFAULT_INTERVAL->value) {
+                for ($i = $startsAt; $i <= $finishedAt; $i += $this->getMeetingLength()) {
                     $meetingDateTime = date(StandardTimeFormat::DEFAULT->value, $i);
+
+                    $minute = Carbon::parse($meetingDateTime)->minute;
+                    $hour = Carbon::parse($meetingDateTime)->hour;
+
                     if (
-                        Carbon::parse($meetingDateTime)->hour >= $this->getWorkingHourTimeResolution()['started_at'] &&
-                        Carbon::parse(
-                            $meetingDateTime
-                        )->hour < $this->getWorkingHourTimeResolution()['finished_at']
+                        $hour >= $this->getWorkingHourTimeResolution()['started_at'] &&
+                        $hour < $this->getWorkingHourTimeResolution()['finished_at']
                     ) {
-                        $result[] = $meetingDateTime;
+                        $startMinuteAt = match (true) {
+                            ($minute >= 15 && $minute <= 30) => 30,
+                            default                          => 0,
+                        };
+
+                        $result[] = Carbon::parse($meetingDateTime)->setTime($hour, $startMinuteAt)->format(
+                            StandardTimeFormat::DEFAULT->value
+                        );
                     }
                 }
 
-                return $result;
+                return $this->groupGeneratedDateTimes($result);
             }
         );
     }
@@ -190,5 +202,28 @@ final class MeetingGenerator
     private function flushCache(): void
     {
         Cache::delete($this->tempCacheKey);
+    }
+
+    /**
+     * @param array $times
+     *
+     * @return array
+     */
+    private function groupGeneratedDateTimes(array $times): array
+    {
+        $newAvailabilities = [];
+        $generatedTimesCount = count($times);
+
+        for ($i = 0; $i < $generatedTimesCount; $i++) {
+            $pair = array_slice($times, $i, 2);
+            if (isset($pair[0], $pair[1])) {
+                $newAvailabilities[] = [
+                    'start_at'    => $pair[0],
+                    'finished_at' => $pair[1],
+                ];
+            }
+        }
+
+        return $newAvailabilities;
     }
 }
