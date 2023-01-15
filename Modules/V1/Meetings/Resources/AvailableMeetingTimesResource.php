@@ -21,7 +21,7 @@ class AvailableMeetingTimesResource extends JsonResource
                 'user_id' => $this['employee']['id'],
                 'full_name' => $this->when(isset($this['employee']['full_name']), $this['employee']['full_name']),
             ],
-            'availabilities' => $this->when($this['availabilities'], $this['availabilities']),
+            'availabilities' => $this->when(isset($this['availabilities']), $this['availabilities']),
         ];
     }
 }
