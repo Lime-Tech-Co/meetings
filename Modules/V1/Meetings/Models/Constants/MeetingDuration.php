@@ -7,5 +7,5 @@ enum MeetingDuration: int
     /*
      * 60 Minutes
      */
-    case MINIMUM_MEETING_DURATION = 60;
+    case MINIMUM_MEETING_DURATION = 30;
 }
