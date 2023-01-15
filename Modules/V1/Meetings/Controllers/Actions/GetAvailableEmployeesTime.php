@@ -3,14 +3,18 @@
 namespace Modules\V1\Meetings\Controllers\Actions;
 
 use App\Http\Actions\Action;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Modules\V1\Meetings\Models\Constants\MeetingDuration;
 use Modules\V1\Meetings\Models\Constants\OfficeWorkingHours;
+use Modules\V1\Meetings\Resources\AvailableMeetingTimesResource;
+use Modules\V1\Meetings\Services\MeetingGenerator;
 use Modules\V1\Users\Models\User;
 
 class GetAvailableEmployeesTime extends Action
 {
-    public function __construct(Request $request)
+    public function __construct(public MeetingGenerator $meetingGenerator, Request $request)
     {
         parent::__construct($request);
     }
@@ -26,14 +30,18 @@ class GetAvailableEmployeesTime extends Action
 
     public function execute()
     {
-        $requestedMeetingDuration =
-            $this->request->query('meeting_length') ?? MeetingDuration::MINIMUM_MEETING_DURATION->value;
-        $participants = $this->request->query('participants');
-        $fromDate = $this->request->query('from');
-        $toDate = $this->request->query('to');
-        $officeWorkingHours = $this->request->query('office_hours') ?? OfficeWorkingHours::WORKING_HOURS->value;
+        $requestData = [
+            'meeting_length' => $this->request->query('meeting_length') ??
+                                MeetingDuration::MINIMUM_MEETING_DURATION->value,
+            'from' => $this->dateParser($this->request->query('from')),
+            'to' => $this->dateParser($this->request->query('to')),
+            'office_hours' => $this->getOfficeWorkingHours(),
+            'participants' => $this->getParticipantsWithTheirBusyTimes(),
+        ];
 
-        $participants = $this->getParticipants();
+        $this->meetingGeneratorSetter($requestData);
+
+        return $this->returner(AvailableMeetingTimesResource::collection(collect($this->meetingGenerator->make())->first()));
     }
 
     protected function rules(): array
@@ -63,8 +71,47 @@ class GetAvailableEmployeesTime extends Action
         ];
     }
 
-    private function getParticipants(): \Illuminate\Database\Eloquent\Collection|array
+    /**
+     * @return void
+     */
+    private function meetingGeneratorSetter(array $requestData): void
     {
-        return User::with('busyTimes')->get();
+        $this->meetingGenerator->setMeetingLength($requestData['meeting_length']);
+        $this->meetingGenerator->setRequestedDateFrom($requestData['from']);
+        $this->meetingGenerator->setRequestedDateTo($requestData['to']);
+        $this->meetingGenerator->setWorkingHourTimeResolution($requestData['office_hours']);
+        $this->meetingGenerator->setParticipants($requestData['participants']);
+    }
+
+    /**
+     * @return Collection
+     */
+    private function getParticipantsWithTheirBusyTimes(): Collection
+    {
+        return User::with('busyTimes')
+                   ->getParticipants($this->request->query('participants'))
+                   ->get();
+    }
+
+    private function dateParser(string $date): int
+    {
+        return Carbon::parse($date)->timestamp;
+    }
+
+    /**
+     * @return array
+     */
+    private function getOfficeWorkingHours(): array
+    {
+        $workingHours = explode(
+            '-',
+            $this->request->query('office_hours') ??
+            OfficeWorkingHours::WORKING_HOURS->value
+        );
+
+        return [
+            'started_at' => (int) $workingHours[0],
+            'finished_at' => (int) $workingHours[1],
+        ];
     }
 }
