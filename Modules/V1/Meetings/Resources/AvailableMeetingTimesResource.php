@@ -17,7 +17,10 @@ class AvailableMeetingTimesResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'employee' => $this['employee'],
+            'employee' => [
+                'user_id' => $this['employee']['id'],
+                'full_name' => $this->when(isset($this['employee']['full_name']), $this['employee']['full_name']),
+            ],
             'availabilities' => $this->when($this['availabilities'], $this['availabilities']),
         ];
     }
