@@ -33,40 +33,44 @@ class GetAvailableEmployeesTime extends Action
         $requestData = [
             'meeting_length' => $this->request->query('meeting_length') ??
                                 MeetingDuration::MINIMUM_MEETING_DURATION->value,
-            'from' => $this->dateParser($this->request->query('from')),
-            'to' => $this->dateParser($this->request->query('to')),
-            'office_hours' => $this->getOfficeWorkingHours(),
-            'participants' => $this->getParticipantsWithTheirBusyTimes(),
+            'from'           => $this->dateParser($this->request->query('from')),
+            'to'             => $this->dateParser($this->request->query('to')),
+            'office_hours'   => $this->getOfficeWorkingHours(),
+            'participants'   => $this->getParticipantsWithTheirBusyTimes(),
         ];
 
         $this->meetingGeneratorSetter($requestData);
 
-        return $this->returner(AvailableMeetingTimesResource::collection(collect($this->meetingGenerator->make())->first()));
+        return $this->returner(
+            AvailableMeetingTimesResource::collection(collect($this->meetingGenerator->make())->first())
+        );
     }
 
     protected function rules(): array
     {
         return [
             'meeting_length' => [
-                'sometimes',
+                'required',
                 'integer',
-                'min:'.MeetingDuration::MINIMUM_MEETING_DURATION->value,
+                'min:' . MeetingDuration::MINIMUM_MEETING_DURATION->value,
             ],
-            'participants' => [
+            'participants'   => [
                 'required',
                 'exists:users,external_user_id',
             ],
-            'office_hours' => [
+            'office_hours'   => [
                 'sometimes',
             ],
-            'from' => [
+            'from'           => [
                 'required',
                 'date',
+                'after_or_equal:now',
             ],
-            'to' => [
+            'to'             => [
                 'required',
                 'date',
                 'after:from',
+                'after_or_equal:now',
             ],
         ];
     }
@@ -110,8 +114,8 @@ class GetAvailableEmployeesTime extends Action
         );
 
         return [
-            'started_at' => (int) $workingHours[0],
-            'finished_at' => (int) $workingHours[1],
+            'started_at' => (int)$workingHours[0],
+            'finished_at' => (int)$workingHours[1],
         ];
     }
 }
