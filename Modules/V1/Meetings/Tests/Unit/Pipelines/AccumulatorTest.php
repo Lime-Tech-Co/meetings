@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\V1\Meetings\Tests\Unit;
+namespace Modules\V1\Meetings\Tests\Unit\Pipelines;
 
-use Modules\V1\Meetings\Models\Pipelines\Accumulator\Accumulator;
 use PHPUnit\Framework\TestCase;
+use Modules\V1\Meetings\Models\Pipelines\Accumulator\Accumulator;
 
 class AccumulatorTest extends TestCase
 {

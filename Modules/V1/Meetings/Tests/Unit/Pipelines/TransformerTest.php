@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\V1\Meetings\Tests\Unit;
+namespace Modules\V1\Meetings\Tests\Unit\Pipelines;
 
-use Modules\V1\Meetings\Models\Pipelines\Transformer\Transformer;
 use PHPUnit\Framework\TestCase;
+use Modules\V1\Meetings\Models\Pipelines\Transformer\Transformer;
 
 class TransformerTest extends TestCase
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\V1\Meetings\Tests\Unit;
+namespace Modules\V1\Meetings\Tests\Unit\Pipelines;
 
 use Carbon\Carbon;
-use Modules\V1\Meetings\Models\Constants\StandardTimeFormat;
 use PHPUnit\Framework\TestCase;
+use Modules\V1\Meetings\Models\Constants\StandardTimeFormat;
 
 class ReviserTest extends TestCase
 {
