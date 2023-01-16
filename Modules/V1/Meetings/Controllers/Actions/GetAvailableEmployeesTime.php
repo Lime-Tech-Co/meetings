@@ -53,6 +53,7 @@ class GetAvailableEmployeesTime extends Action
                 'required',
                 'integer',
                 'min:' . MeetingDuration::MINIMUM_MEETING_DURATION->value,
+                'max:' . MeetingDuration::MAXIMUM_MEETING_DURATION->value,
             ],
             'participants'   => [
                 'required',
@@ -114,7 +115,7 @@ class GetAvailableEmployeesTime extends Action
         );
 
         return [
-            'started_at' => (int)$workingHours[0],
+            'started_at'  => (int)$workingHours[0],
             'finished_at' => (int)$workingHours[1],
         ];
     }
