@@ -3,8 +3,8 @@
 namespace Modules\V1\Meetings\Tests\Unit\Pipelines;
 
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
 use Modules\V1\Meetings\Models\Constants\StandardTimeFormat;
+use PHPUnit\Framework\TestCase;
 
 class ReviserTest extends TestCase
 {
