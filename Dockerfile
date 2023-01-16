@@ -9,7 +9,8 @@ RUN apt-get update && \
         libonig-dev \
         libzip-dev \
         zip \
-        unzip
+        unzip \
+        git
 
 RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install bcmath \
@@ -33,6 +34,9 @@ COPY composer.json composer.lock /app/
 
 # Install dependencies
 RUN composer install --no-dev --no-scripts --no-autoloader
+
+# Install phpcs fixer globally
+RUN composer global require friendsofphp/php-cs-fixer
 
 # Copy the rest of the codebase
 COPY . /app

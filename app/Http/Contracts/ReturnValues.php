@@ -3,19 +3,23 @@
 namespace App\Http\Contracts;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 final class ReturnValues
 {
     /**
      * Generate a success response
      *
-     * @param string|null $msg  Message to showing to the client
-     * @param array|null  $data Array of data to be return to the user
+     * @param string|null                                                 $msg  Message to showing to the client
+     * @param array|AnonymousResourceCollection|LengthAwarePaginator|null $data Array of data to be return to the user
      *
      * @return JsonResponse
      */
-    public function successfulReturn(string $msg = null, array $data = null): JsonResponse
-    {
+    public function successfulReturn(
+        string $msg = null,
+        array|AnonymousResourceCollection|LengthAwarePaginator $data = null
+    ): JsonResponse {
         $finalData = [];
 
         $msg and $finalData['message'] = $msg;

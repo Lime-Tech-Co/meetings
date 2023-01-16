@@ -17,8 +17,7 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->string('external_user_id')->unique();
 
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
+            $table->string('full_name')->nullable();
             $table->string('email')->nullable()->unique();
             $table->enum('status', UserStatus::getAllValues())
                   ->default(UserStatus::ENABLED->value);
