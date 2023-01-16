@@ -19,6 +19,7 @@ final class MeetingGenerator
     private int $requestedDateTo;
     private Collection $participants;
     private string $tempCacheKey;
+    private const RANDOM_STRING_LENGTH = 10;
 
     public function make(): array
     {
@@ -195,7 +196,7 @@ final class MeetingGenerator
     {
         return implode('-', [
             MeetingCacheKeys::GENERATED_CALENDAR,
-            Str::random(10),
+            Str::random(self::RANDOM_STRING_LENGTH),
         ]);
     }
 
