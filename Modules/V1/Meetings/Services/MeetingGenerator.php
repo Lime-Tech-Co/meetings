@@ -118,8 +118,8 @@ final class MeetingGenerator
 
         $result[] = $meetingParticipants->map(function ($employee) {
             return [
-                'employee'       => [
-                    'id'        => $employee->external_user_id,
+                'employee' => [
+                    'id' => $employee->external_user_id,
                     'full_name' => $employee->fullname ?? null,
                 ],
                 'availabilities' => $this->getUserAvailabilities($employee),
@@ -178,7 +178,7 @@ final class MeetingGenerator
                     ) {
                         $startMinuteAt = match (true) {
                             ($minute >= 15 && $minute <= 30) => 30,
-                            default                          => 0,
+                            default => 0,
                         };
 
                         $result[] = Carbon::parse($meetingDateTime)->setTime($hour, $startMinuteAt)->format(
@@ -215,11 +215,11 @@ final class MeetingGenerator
         $newAvailabilities = [];
         $generatedTimesCount = count($times);
 
-        for ($i = 0; $i < $generatedTimesCount; $i++) {
+        for ($i = 0; $i < $generatedTimesCount; ++$i) {
             $pair = array_slice($times, $i, 2);
             if (isset($pair[0], $pair[1])) {
                 $newAvailabilities[] = [
-                    'start_at'    => $pair[0],
+                    'start_at' => $pair[0],
                     'finished_at' => $pair[1],
                 ];
             }
