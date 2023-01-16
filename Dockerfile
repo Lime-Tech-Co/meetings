@@ -22,7 +22,14 @@ RUN docker-php-ext-install pdo_mysql \
 RUN sed -i "s/upload_max_filesize = .*/upload_max_filesize = 200M/" /usr/local/etc/php/php.ini-development
 RUN sed -i "s/post_max_size = .*/post_max_size = 200M/" /usr/local/etc/php/php.ini-development
 
-# Install Composer
+# Installations
+#NodeJs and Yarn and apidocs
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get -y install yarn
+RUN yarn global add apidoc
+# composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Create a working directory
