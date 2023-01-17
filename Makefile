@@ -8,6 +8,7 @@ it:
 	docker exec meetings-app-1 bash -c "php artisan key:generate"
 	docker exec meetings-app-1 bash -c "php artisan migrate"
 	docker exec meetings-app-1 bash -c "php artisan db:seed"
+	docker exec meetings-app-1 bash -c "php artisan storage:link"
 	docker exec meetings-app-1 bash -c "composer docs"
 	docker exec meetings-app-1 bash -c "php artisan test"
 .PHONY: tests
