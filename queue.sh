@@ -9,6 +9,6 @@ if [ "$role" = "queue" ]; then
     # Run queue
     while [ true ]
     do
-      php artisan queue:work --queue=listeners,delete_files_queue,busy_times_importer_queue,user_registration_queue --verbose --tries=3 --timeout=90 --no-interaction
+      php artisan queue:work --queue=user_registration_queue,listeners,delete_files_queue,busy_times_importer_queue --verbose --tries=3 --timeout=90 --no-interaction
     done
 fi

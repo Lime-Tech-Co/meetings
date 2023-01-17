@@ -9,6 +9,22 @@ services:
     depends_on:
       - mysql
       - redis
+  queue:
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+      - redis
+    command: bash ./queue.sh
+  scheduler:
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+      - redis
+    command: bash ./scheduler.sh
   mysql:
     image: mysql:8.0
     environment:
@@ -28,45 +44,10 @@ services:
       - "8080:80"
     depends_on:
       - mysql
-  sqlite:
-    image: keinos/sqlite3
-    volumes:
-      - sqlite:/db
   redis:
     image: redis:5.0
     volumes:
       - redis:/data
-  scheduler:
-    image: meetings-app:latest
-    depends_on:
-      - app
-      - redis
-      - mysql
-    volumes:
-      - .:/var/www/html
-    environment:
-      CONTAINER_ROLE: scheduler
-      CACHE_DRIVER: redis
-      SESSION_DRIVER: redis
-      QUEUE_DRIVER: redis
-      REDIS_HOST: redis
-    command: bash ./scheduler.sh
-  queue:
-    image: meetings-app:latest
-    depends_on:
-      - app
-      - redis
-      - mysql
-    volumes:
-      - .:/var/www/html
-    environment:
-      CONTAINER_ROLE: queue
-      CACHE_DRIVER: redis
-      SESSION_DRIVER: redis
-      QUEUE_DRIVER: redis
-      REDIS_HOST: redis
-    command: bash ./queue.sh
 volumes:
   mysql:
-  sqlite:
   redis:
