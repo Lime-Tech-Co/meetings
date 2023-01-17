@@ -2,9 +2,7 @@
 ## Table of Contents
 
 - [Up And Running](#up-and-running)
-- [Example Readmes](#example-readmes)
-- [Related Efforts](#related-efforts)
-- [Related Efforts](#related-efforts)
+- [Documentation](#documentation)
 
 ## Up And Running
 
@@ -32,9 +30,21 @@ $ docker exec meetings-app-1 bash -c "php artisan key:generate"
 $ docker exec meetings-app-1 bash -c "php artisan migrate --seed"
 ```
 
-Second method:
+```sh
+$ docker exec meetings-app-1 bash -c "composer docs"
+```
 
-simply run 
+```sh
+$ docker exec meetings-app-1 bash -c "php artisan test"
+```
+
+alternatively you can simply run:
+
 ```sh
 $ make it
 ```
+
+### Documentation
+Please open the link below the find out a bit more about structure.
+[ClickUP](https://publicdoc.clickup.com/9004023643/d/h/8cawzuv-21/da894f6659cb97c)
+
