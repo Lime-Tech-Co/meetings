@@ -38,8 +38,9 @@ The below commands are optional
 $ docker exec meeting_app bash -c "php artisan db:seed"
 ```
 Api documentation will be generated in root of the project
-- /docs will be added
-- open index.html 
+- documentation/docsV1 folder will be added
+- open index.html to see the API docs page
+
 ```sh
 $ docker exec meeting_app bash -c "composer docs"
 ```
