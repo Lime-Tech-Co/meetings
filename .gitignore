@@ -4,10 +4,12 @@
 /public/storage
 /storage/*.key
 /vendor
+/documentation/docsV1
 .env
 .env.backup
 .env.production
 .phpunit.result.cache
+.php-cs-fixer.cache
 Homestead.json
 Homestead.yaml
 auth.json
@@ -16,3 +18,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+.DS_Store

@@ -18,23 +18,19 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/home';
+    protected string $apiV1Namespace = 'Modules\\V1';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            $this->mapV1ApiRoutes();
         });
     }
 
@@ -43,10 +39,18 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+    }
+
+    protected function mapV1ApiRoutes(): void
+    {
+        Route::middleware('api')
+             ->namespace($this->apiV1Namespace)
+             ->prefix('api/v1')
+             ->group(base_path('routes/api_v1.php'));
     }
 }
