@@ -1,0 +1,508 @@
+{
+	"info": {
+		"_postman_id": "98de5b85-7a6a-4db7-b550-4428bb76ac5b",
+		"name": "Lime Meeting API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23692981"
+	},
+	"item": [
+		{
+			"name": "Meetings",
+			"item": [
+				{
+					"name": "Meeting Time Availabilities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{authorization}}",
+								"description": "This Is optional for NOW",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url_test}}/api/v1/meetings/available?meeting_length=120&office_hours=08-17&participants[]=259939411636051033617118653993975778241&participants[]=57646786307395936680161735716561753784&paginated=1&from=2/2/2023 8:00:00 AM&to=2/2/2023 07:00:00 PM",
+							"host": [
+								"{{base_url_test}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"meetings",
+								"available"
+							],
+							"query": [
+								{
+									"key": "meeting_length",
+									"value": "120",
+									"description": "In minutes <int>"
+								},
+								{
+									"key": "office_hours",
+									"value": "08-17",
+									"description": "company working hour <strting>"
+								},
+								{
+									"key": "participants[]",
+									"value": "259939411636051033617118653993975778241"
+								},
+								{
+									"key": "participants[]",
+									"value": "57646786307395936680161735716561753784"
+								},
+								{
+									"key": "paginated",
+									"value": "1"
+								},
+								{
+									"key": "from",
+									"value": "2/2/2023 8:00:00 AM"
+								},
+								{
+									"key": "to",
+									"value": "2/2/2023 07:00:00 PM"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Meeting Time Availabilities",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"description": "This Is optional for NOW",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url_test}}/api/v1/meetings/available?meeting_length=30&office_hours=08-17&participants[]=259939411636051033617118653993975778241&participants[]=57646786307395936680161735716561753784&paginated=1&from=2/2/2023 8:00:00 AM&to=2/2/2023 07:00:00 PM",
+									"host": [
+										"{{base_url_test}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"meetings",
+										"available"
+									],
+									"query": [
+										{
+											"key": "meeting_length",
+											"value": "30",
+											"description": "In minutes <int>"
+										},
+										{
+											"key": "office_hours",
+											"value": "08-17",
+											"description": "company working hour <strting>"
+										},
+										{
+											"key": "participants[]",
+											"value": "259939411636051033617118653993975778241"
+										},
+										{
+											"key": "participants[]",
+											"value": "57646786307395936680161735716561753784"
+										},
+										{
+											"key": "paginated",
+											"value": "1"
+										},
+										{
+											"key": "from",
+											"value": "2/2/2023 8:00:00 AM"
+										},
+										{
+											"key": "to",
+											"value": "2/2/2023 07:00:00 PM"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 15 Jan 2023 20:52:29 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 15 Jan 2023 20:52:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.1"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"employee\": {\n                    \"user_id\": \"259939411636051033617118653993975778241\"\n                },\n                \"availabilities\": [\n                    {\n                        \"start_at\": \"2023-02-02 08:00:00\",\n                        \"finished_at\": \"2023-02-02 08:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 08:30:00\",\n                        \"finished_at\": \"2023-02-02 09:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 09:00:00\",\n                        \"finished_at\": \"2023-02-02 09:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 09:30:00\",\n                        \"finished_at\": \"2023-02-02 10:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 11:30:00\",\n                        \"finished_at\": \"2023-02-02 12:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 12:00:00\",\n                        \"finished_at\": \"2023-02-02 12:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 12:30:00\",\n                        \"finished_at\": \"2023-02-02 13:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 13:00:00\",\n                        \"finished_at\": \"2023-02-02 13:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 13:30:00\",\n                        \"finished_at\": \"2023-02-02 14:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 14:00:00\",\n                        \"finished_at\": \"2023-02-02 14:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 14:30:00\",\n                        \"finished_at\": \"2023-02-02 15:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 15:00:00\",\n                        \"finished_at\": \"2023-02-02 15:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 15:30:00\",\n                        \"finished_at\": \"2023-02-02 16:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 16:00:00\",\n                        \"finished_at\": \"2023-02-02 16:30:00\"\n                    }\n                ]\n            },\n            {\n                \"employee\": {\n                    \"user_id\": \"57646786307395936680161735716561753784\"\n                },\n                \"availabilities\": [\n                    {\n                        \"start_at\": \"2023-02-02 09:00:00\",\n                        \"finished_at\": \"2023-02-02 09:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 09:30:00\",\n                        \"finished_at\": \"2023-02-02 10:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 10:00:00\",\n                        \"finished_at\": \"2023-02-02 10:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 10:30:00\",\n                        \"finished_at\": \"2023-02-02 11:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 11:00:00\",\n                        \"finished_at\": \"2023-02-02 11:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 11:30:00\",\n                        \"finished_at\": \"2023-02-02 12:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 12:00:00\",\n                        \"finished_at\": \"2023-02-02 12:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 12:30:00\",\n                        \"finished_at\": \"2023-02-02 13:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 13:00:00\",\n                        \"finished_at\": \"2023-02-02 13:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 13:30:00\",\n                        \"finished_at\": \"2023-02-02 14:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 14:00:00\",\n                        \"finished_at\": \"2023-02-02 14:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 14:30:00\",\n                        \"finished_at\": \"2023-02-02 15:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 15:00:00\",\n                        \"finished_at\": \"2023-02-02 15:30:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 15:30:00\",\n                        \"finished_at\": \"2023-02-02 16:00:00\"\n                    },\n                    {\n                        \"start_at\": \"2023-02-02 16:00:00\",\n                        \"finished_at\": \"2023-02-02 16:30:00\"\n                    }\n                ]\n            }\n        ],\n        \"first_page_url\": \"/?page=1\",\n        \"from\": 1,\n        \"last_page\": 1,\n        \"last_page_url\": \"/?page=1\",\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"/?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"next_page_url\": null,\n        \"path\": \"/\",\n        \"per_page\": 15,\n        \"prev_page_url\": null,\n        \"to\": 2,\n        \"total\": 2\n    }\n}"
+						},
+						{
+							"name": "Meeting Time Availabilities",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"description": "This Is optional for NOW",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url_test}}/api/v1/meetings/available",
+									"host": [
+										"{{base_url_test}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"meetings",
+										"available"
+									],
+									"query": [
+										{
+											"key": "meeting_length",
+											"value": "130",
+											"description": "In minutes <int>",
+											"disabled": true
+										},
+										{
+											"key": "office_hours",
+											"value": "08-17",
+											"description": "company working hour <strting>",
+											"disabled": true
+										},
+										{
+											"key": "participants[]",
+											"value": "259939411636051033617118653993975778241",
+											"disabled": true
+										},
+										{
+											"key": "participants[]",
+											"value": "57646786307395936680161735716561753784",
+											"disabled": true
+										},
+										{
+											"key": "paginated",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "from",
+											"value": "2/2/2023 8:00:00 AM",
+											"disabled": true
+										},
+										{
+											"key": "to",
+											"value": "2/2/2023 07:00:00 PM",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 16 Jan 2023 16:20:43 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 16 Jan 2023 16:20:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.1"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": {\n        \"meeting_length\": [\n            \"The meeting length field is required.\"\n        ],\n        \"participants\": [\n            \"The participants field is required.\"\n        ],\n        \"from\": [\n            \"The from field is required.\"\n        ],\n        \"to\": [\n            \"The to field is required.\"\n        ]\n    },\n    \"code\": 10000\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "Upload file",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{authorization}}",
+								"description": "This Is optional for NOW",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "only txt files are allowed",
+									"type": "file",
+									"src": "/Users/farshid/Downloads/freebusy.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url_test}}/api/v1/files",
+							"host": [
+								"{{base_url_test}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"files"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Upload file",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"description": "This Is optional for NOW",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"description": "only txt files are allowed",
+											"type": "file",
+											"src": "/Users/farshid/Downloads/freebusy-1.0.0.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/files",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"files"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 07 Jan 2023 15:37:25 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 07 Jan 2023 15:37:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.1"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"message\": \"File uploaded successfully.\",\n        \"data\": {\n            \"id\": \"97caf2c3-c64f-4985-80e0-911e7a1e6fc3\",\n            \"filename\": \"d8tu1kHZ5iPcRNor4WPkv2bIJNWFK2AoCuffutNf.txt\"\n        }\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://b0380757-6373-4a9a-8ece-67a2f6324d0e.mock.pstmn.io"
+		},
+		{
+			"key": "authorization",
+			"value": "Bearer ...."
+		},
+		{
+			"key": "base_url_test",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}
