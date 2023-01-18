@@ -19,46 +19,24 @@ RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install exif
 
 # Installations
-#NodeJs and Yarn and apidocs
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get -y install yarn && apt-get -y install sqlite3
 RUN yarn global add apidoc
-# composer
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Create a working directory
-RUN mkdir /app
-WORKDIR /app
-
-# Copy the composer.json and composer.lock files
-COPY composer.json composer.lock /app/
-
-# Install dependencies
-RUN composer install --no-dev --no-scripts --no-autoloader
-
-# Install phpcs fixer globally
 RUN composer global require friendsofphp/php-cs-fixer
 
-# Copy the rest of the codebase
+RUN mkdir /app
 COPY . /app
 COPY uploads.ini /usr/local/etc/php/conf.d/
 
-# Generate the autoloader
-RUN composer dump-autoload --optimize
+WORKDIR /app
 
-# Set the application URL
+RUN composer install
+RUN composer dump-autoload
+
 ENV APP_URL=http://localhost
 
-# Set the application environment
 ENV APP_ENV=local
-
-# Set the application key
-RUN php artisan key:generate --no-interaction
-
-# Expose the application's port
-EXPOSE 8000
-
-# Run the application
-CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]

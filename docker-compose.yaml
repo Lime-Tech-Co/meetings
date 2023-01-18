@@ -2,6 +2,7 @@ version: '3'
 services:
   app:
     build: .
+    container_name: meeting_app
     ports:
       - "8000:8000"
     volumes:
@@ -9,8 +10,20 @@ services:
     depends_on:
       - mysql
       - redis
+    command: ["sh", "-c", "composer install && php artisan serve --host 0.0.0.0 --port 8000"]
+  mysql:
+    image: mysql:8.0
+    container_name: meeting_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lime
+      MYSQL_USER: default
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql:/var/lib/mysql
   queue:
     build: .
+    container_name: meeting_queue
     volumes:
       - .:/app
     depends_on:
@@ -19,23 +32,16 @@ services:
     command: bash ./queue.sh
   scheduler:
     build: .
+    container_name: meeting_scheduler
     volumes:
       - .:/app
     depends_on:
       - mysql
       - redis
     command: bash ./scheduler.sh
-  mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: lime
-      MYSQL_USER: default
-      MYSQL_PASSWORD: secret
-    volumes:
-      - mysql:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: meeting_phpmyadmin
     environment:
       PMA_HOST: mysql
       PMA_USER: root
@@ -45,7 +51,8 @@ services:
     depends_on:
       - mysql
   redis:
-    image: redis:5.0
+    image: redis:latest
+    container_name: meeting_redis
     volumes:
       - redis:/data
 volumes:
