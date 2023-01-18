@@ -60,7 +60,7 @@ class NewUserRegistrar implements ShouldQueue
      */
     public function failed(\Exception $exception): void
     {
-        \Log::info('cannot import busy time:'.$exception->getMessage());
+        \Log::info('cannot register new user :'.$exception->getMessage());
 
         $this->release($this->retryAfter);
     }
