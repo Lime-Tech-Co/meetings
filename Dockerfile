@@ -40,3 +40,5 @@ RUN composer dump-autoload
 ENV APP_URL=http://localhost
 
 ENV APP_ENV=local
+
+ENV PHP_CS_FIXER_IGNORE_ENV=1
