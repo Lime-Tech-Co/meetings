@@ -53,7 +53,7 @@
             "php-cs-fixer fix Modules --config=.php-cs-fixer.php"
         ],
         "docs": [
-            "apidoc -i Modules -o docs"
+            "apidoc -i Modules -o documentation/docsV1"
         ]
     },
     "extra": {
