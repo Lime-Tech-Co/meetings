@@ -31,9 +31,6 @@ class Accumulator extends BasePipeline
 
     private function accumulateEmployeeData(array $employeeBusyTimes): array
     {
-        /*
-         * Array reduce is much faster than
-         */
         return array_reduce($employeeBusyTimes, function ($accumulator, $item) {
             /**
              * Item[0] is user id and will be set on array key.
@@ -56,7 +53,7 @@ class Accumulator extends BasePipeline
                     $accumulator[$index]['full_name'] = null;
                     $accumulator[$index]['busy_times'][] =
                         isset($item[1], $item[2]) ? [$item[1], $item[2]] :
-                            null;
+                        null;
                     $accumulator[$index]['external_unique_id'] = $item[3] ?? null;
                     break;
             }
