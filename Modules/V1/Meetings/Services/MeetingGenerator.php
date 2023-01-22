@@ -158,6 +158,9 @@ final class MeetingGenerator
      */
     private function generateCalendarTimes(): array
     {
+        /**
+         * The below times are converted to timestamp.
+         */
         $startsAt = $this->getRequestedDateFrom();
         $finishedAt = $this->getRequestedDateTo();
 
@@ -166,6 +169,16 @@ final class MeetingGenerator
             MeetingCacheKeys::GENERATED_CALENDAR_TIME,
             function () use ($startsAt, $finishedAt) {
                 $result = [];
+                /**
+                 * 1- $i will be $startsAt, and it would be less or equal finishedAt
+                 * 2- As "i" is the time stamp, in order to generate the time resolution
+                 *  meetingLength will be added to "i"
+                 *  example:
+                 *  MeetingLength => 120 Minutes * 60 seconds = 7200 seconds
+                 *  StartsAd => 1675324800
+                 *  FinishedAt  => 1675368000
+                 *  MeetingLength would be added to "i" for each iteration.
+                 */
                 for ($i = $startsAt; $i <= $finishedAt; $i += $this->getMeetingLength()) {
                     $meetingDateTime = date(StandardTimeFormat::DEFAULT->value, $i);
 
@@ -186,6 +199,18 @@ final class MeetingGenerator
                         );
                     }
                 }
+
+                /*
+                 * Example:
+                 * Generated calendar
+                 * [
+                 *  "2023-02-02 08:00:00"
+                 *  "2023-02-02 10:00:00"
+                 *  "2023-02-02 12:00:00"
+                 *  "2023-02-02 14:00:00"
+                 *  "2023-02-02 16:00:00"
+                 *  ]
+                 */
 
                 return $this->groupGeneratedDateTimes($result);
             }
@@ -212,11 +237,41 @@ final class MeetingGenerator
      */
     private function groupGeneratedDateTimes(array $times): array
     {
+        /*
+         * $times would be:
+         * [
+         *  "2023-02-02 08:00:00"
+         *  "2023-02-02 10:00:00"
+         *  "2023-02-02 12:00:00"
+         *  "2023-02-02 14:00:00"
+         *  "2023-02-02 16:00:00"
+         *  ]
+         *
+         * Result after Manipulation:
+         * [
+         *  [
+         *      "start_at" => "2023-02-02 08:00:00",
+         *      "finished_at" => "2023-02-02 10:00:00",
+         *  ],
+         *  [
+         *      "start_at" => "2023-02-02 10:00:00",
+         *      "finished_at" => "2023-02-02 12:00:00",
+         *  ],
+         *  [
+         *      "start_at" => "2023-02-02 12:00:00",
+         *      "finished_at" => "2023-02-02 14:00:00",
+         *  ],
+         *  [
+         *      "start_at" => "2023-02-02 14:00:00",
+         *      "finished_at" => "2023-02-02 16:00:00",
+         *  ],
+         * ]
+         */
         $newAvailabilities = [];
         $generatedTimesCount = count($times);
 
         for ($i = 0; $i < $generatedTimesCount; ++$i) {
-            $pair = array_slice($times, $i, 2);
+            $pair = array_slice($times, $i, 2); // Based on $i 0 and 1 index will be fetched
             if (isset($pair[0], $pair[1])) {
                 $newAvailabilities[] = [
                     'start_at' => $pair[0],
