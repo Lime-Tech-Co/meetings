@@ -2,11 +2,19 @@
 
 namespace Modules\V1\Uploaders\Listeners;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\V1\Meetings\Models\Pipelines\PipelineManager;
 use Modules\V1\Uploaders\Events\FileUploaded;
 
-class ImportNewEmployeeBusyTimes
+class ImportNewEmployeeBusyTimes implements ShouldQueue
 {
+    /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'listeners';
+
     /**
      * Handle the event.
      *
