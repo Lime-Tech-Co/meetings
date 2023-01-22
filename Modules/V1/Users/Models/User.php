@@ -60,7 +60,6 @@ class User extends Authenticatable
 
     /**
      * @param       $query
-     * @param array $userIds
      *
      * @return Builder
      */
